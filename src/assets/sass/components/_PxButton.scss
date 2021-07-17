@@ -1,0 +1,22 @@
+@import "../utils/_variables.scss";
+
+.question {
+  &__button {
+    text-align: right;
+    &-next {
+      width: 116px;
+      height: 56px;
+      background: #f9a826;
+      border: 2px solid #f9a826;
+      border-radius: 12px;
+      color: #ffffff;
+      font-family: $font-poppins-bold;
+      font-size: 1.125rem;
+      transition: 0.3s ease all;
+      &:hover {
+        background: #ffffff;
+        color: #000000;
+      }
+    }
+  }
+}

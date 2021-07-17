@@ -1,0 +1,35 @@
+@import "../utils/_variables.scss";
+
+.question {
+  &__answer {
+    width: 100%;
+    height: 56px;
+    border: 2px solid #6066d0b2;
+    margin: 0 0 1.5625rem 0;
+    background: #ffffff;
+    border-radius: 1.33333rem;
+    padding: 10px 19px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: 0.3s ease all;
+    span {
+      font-family: $font-poppins-regular;
+      font-size: 1.125rem;
+      color: #6066d0cc;
+      transition: 0.3s ease all;
+    }
+    & > &-letter {
+      margin: 0 2.875rem 0 0;
+      font-size: 1.5rem;
+    }
+    &:hover {
+      background: #f9a826;
+      border-color: #f9a826;
+      span {
+        color: #ffffff;
+      }
+    }
+  }
+}
