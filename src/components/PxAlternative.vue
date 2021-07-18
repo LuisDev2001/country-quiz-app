@@ -1,7 +1,7 @@
 <template>
   <div class="question__answer">
-    <span class="question__answer-letter">A</span>
-    <span class="question__answer-text">Vietnam</span>
+    <span class="question__answer-letter">{{ letter }}</span>
+    <span class="question__answer-text">{{ textAlternative }}</span>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ export default {
   name: "PxAlternative",
   props: {
     letter: String,
-    text: String,
+    textAlternative: String,
   },
 };
 </script>
