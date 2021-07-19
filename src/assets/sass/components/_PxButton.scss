@@ -2,7 +2,9 @@
 
 .question {
   &__button {
-    text-align: right;
+    position: absolute;
+    right: 35px;
+    z-index: 55;
     &-next {
       width: 116px;
       height: 56px;

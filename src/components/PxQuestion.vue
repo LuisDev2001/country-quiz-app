@@ -9,8 +9,8 @@
     <PxAlternative
       v-for="(alternative, index) in alternatives"
       :key="index"
-      :letter="index"
-      :textAlternative="alternative.text"
+      :letter="ValidationIndex(index)"
+      :textAlternative="alternative.name"
     />
 
     <PxButton textButton="Next" />
@@ -23,6 +23,8 @@ import PxContainerQuestion from "./PxContainerQuestion";
 import PxQuestionText from "./PxQuestionText";
 import PxAlternative from "./PxAlternative";
 import PxButton from "./PxButton";
+//Utils
+import { Shuffle, ValidationIndex } from "@/utils";
 
 export default {
   name: "PxQuestion",
@@ -36,12 +38,7 @@ export default {
     let optionsQuestions = reactive({
       min: 0,
       max: 250,
-      alternatives: {
-        A: { text: "", correct: false },
-        B: { text: "", correct: false },
-        C: { text: "", correct: false },
-        D: { text: "", correct: false },
-      },
+      alternatives: [],
       countryQuestion: "",
       API_QUESTION_CAPITAL:
         "https://restcountries.eu/rest/v2/all?fields=name;capital",
@@ -50,12 +47,16 @@ export default {
     });
 
     onMounted(async () => {
-      console.log("/*********DATA*******/");
       try {
         const response = await fetch(optionsQuestions.API_QUESTION_CAPITAL);
         const data = await response.json();
-        console.log(data[ramdomNumber.value]);
-        optionsQuestions.countryQuestion = data[ramdomNumber.value].name;
+        //Shuffle alternatives
+        let alternatives = Shuffle(data).slice(0, 3);
+        alternatives.push(data[ramdomNumber.value]);
+        Shuffle(alternatives);
+        //Add information for state
+        optionsQuestions.alternatives = alternatives;
+        optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
       } catch (error) {
         console.log(error);
       }
@@ -70,6 +71,7 @@ export default {
 
     return {
       ...toRefs(optionsQuestions),
+      ValidationIndex,
     };
   },
 };

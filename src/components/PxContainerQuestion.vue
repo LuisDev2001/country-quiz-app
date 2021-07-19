@@ -15,7 +15,7 @@ export default {
   background: #ffffff;
   padding: 2.9rem 2rem 4.25rem;
   border-radius: 1.5rem;
-  height: 515px;
+  height: auto;
   position: relative;
 }
 </style>
