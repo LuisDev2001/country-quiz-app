@@ -13,7 +13,7 @@
       :textAlternative="alternative.name"
     />
 
-    <PxButton textButton="Next" />
+    <PxButton textButton="Next" @click="nextQuestion" />
   </PxContainerQuestion>
 </template>
 
@@ -44,6 +44,7 @@ export default {
         "https://restcountries.eu/rest/v2/all?fields=name;capital",
       API_QUESTION_FLAG:
         "https://restcountries.eu/rest/v2/all?fields=name;capital;flag",
+      questionsCorrect: [],
     });
 
     onMounted(async () => {
@@ -62,6 +63,7 @@ export default {
       }
     });
 
+    /*Computeds*/
     let ramdomNumber = computed(() =>
       Math.floor(
         Math.random() * (optionsQuestions.max - optionsQuestions.min) +
@@ -69,9 +71,15 @@ export default {
       )
     );
 
+    /* Methods */
+    const nextQuestion = () => {
+      console.log("click");
+    };
+
     return {
       ...toRefs(optionsQuestions),
       ValidationIndex,
+      nextQuestion,
     };
   },
 };
