@@ -18,13 +18,18 @@
 </template>
 
 <script>
-import { onMounted, reactive, computed, toRefs } from "vue";
+import { onMounted, reactive, computed, toRefs, ref } from "vue";
 import PxContainerQuestion from "./PxContainerQuestion";
 import PxQuestionText from "./PxQuestionText";
 import PxAlternative from "./PxAlternative";
 import PxButton from "./PxButton";
 //Utils
-import { Shuffle, ValidationIndex } from "@/utils";
+import {
+  Shuffle,
+  ValidationIndex,
+  FetchData,
+  ShuffleAlternatives,
+} from "@/utils";
 
 export default {
   name: "PxQuestion",
@@ -44,22 +49,31 @@ export default {
         "https://restcountries.eu/rest/v2/all?fields=name;capital",
       API_QUESTION_FLAG:
         "https://restcountries.eu/rest/v2/all?fields=name;capital;flag",
-      questionsCorrect: [],
+      asnwer: {},
+      questionsCorrect: 0,
+      endGame: false,
+      loading: false,
+      error: null,
     });
 
     onMounted(async () => {
       try {
-        const response = await fetch(optionsQuestions.API_QUESTION_CAPITAL);
-        const data = await response.json();
-        //Shuffle alternatives
-        let alternatives = Shuffle(data).slice(0, 3);
-        alternatives.push(data[ramdomNumber.value]);
-        Shuffle(alternatives);
+        optionsQuestions.loading = true;
+
+        //Get data for api country
+        const data = await FetchData(optionsQuestions.API_QUESTION_CAPITAL);
+
+        //Shuffle Alternatives
+        const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
+
         //Add information for state
+        optionsQuestions.asnwer = data[ramdomNumber.value];
         optionsQuestions.alternatives = alternatives;
         optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
+        optionsQuestions.loading = false;
       } catch (error) {
         console.log(error);
+        optionsQuestions.error = error;
       }
     });
 
@@ -71,9 +85,36 @@ export default {
       )
     );
 
-    /* Methods */
-    const nextQuestion = () => {
-      console.log("click");
+    const nextQuestion = async () => {
+      const answer = optionsQuestions.asnwer.name;
+      const selectedAlternative = JSON.parse(
+        localStorage.getItem("selectedAlternative")
+      );
+      if (selectedAlternative == answer) {
+        optionsQuestions.questionsCorrect++;
+        optionsQuestions.loading = true;
+
+        console.log(optionsQuestions.questionsCorrect);
+
+        //Get data for api country
+        const data = await FetchData(optionsQuestions.API_QUESTION_CAPITAL);
+
+        //Shuffle Alternatives
+        const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
+
+        //Add information for state
+        optionsQuestions.asnwer = data[ramdomNumber.value];
+        optionsQuestions.alternatives = alternatives;
+        optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
+        optionsQuestions.loading = false;
+      } else {
+        if (optionsQuestions.questionsCorrect > 0) {
+          optionsQuestions.questionsCorrect--;
+        } else {
+          optionsQuestions.endGame = true;
+        }
+        console.log(optionsQuestions.questionsCorrect);
+      }
     };
 
     return {

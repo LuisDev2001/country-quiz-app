@@ -1,7 +1,7 @@
 <template>
   <div
+    @click="handleClickAlternative(textAlternative)"
     :class="{ question__answer: true, 'is-active': activeAlternative }"
-    @click="handleClickAlternative"
   >
     <span class="question__answer-letter">{{ letter }}</span>
     <span class="question__answer-text">{{ textAlternative }}</span>
@@ -21,8 +21,12 @@ export default {
     const activeAlternative = ref(false);
 
     /*Methods*/
-    const handleClickAlternative = () => {
+    const handleClickAlternative = (textAlternative) => {
       activeAlternative.value = !activeAlternative.value;
+      localStorage.setItem(
+        "selectedAlternative",
+        JSON.stringify(textAlternative)
+      );
     };
 
     return {
