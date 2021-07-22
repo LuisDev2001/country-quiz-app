@@ -2,11 +2,13 @@
 
 .question {
   &__button {
-    position: absolute;
-    right: 35px;
-    z-index: 55;
+    text-align: center;
     &-next {
-      width: 116px;
+      position: absolute;
+      right: 35px;
+      z-index: 55;
+      width: 100%;
+      max-width: 116px;
       height: 56px;
       background: #f9a826;
       border: 2px solid #f9a826;
@@ -18,6 +20,21 @@
       &:hover {
         background: #ffffff;
         color: #000000;
+      }
+    }
+    &-again {
+      width: 100%;
+      max-width: 209px;
+      height: 62px;
+      background: #ffffff;
+      border: 2px solid #1d355d;
+      border-radius: 12px;
+      font-size: 1.125rem;
+      font-family: $font-poppins-bold;
+      transition: 0.3s ease all;
+      &:hover {
+        background: #1d355d;
+        color: #ffffff;
       }
     }
   }

@@ -1,0 +1,28 @@
+@import "../utils/_variables.scss";
+.result {
+  &__image {
+    width: 100%;
+    max-width: 238px;
+    height: 128px;
+    margin: 0 auto 4.5rem auto;
+    display: block;
+  }
+  &__title {
+    font-family: $font-poppins-semi-bold;
+    font-size: 3rem;
+    text-align: center;
+    color: #1d355d;
+    margin: 0 0 1rem 0;
+  }
+  &__text {
+    text-align: center;
+    margin: 0 0 4.375rem;
+    font-family: $font-poppins-regular;
+    font-size: 1.15rem;
+  }
+  &__points {
+    font-family: $font-poppins-semi-bold;
+    font-size: 2.25rem;
+    color: #6fcf97;
+  }
+}

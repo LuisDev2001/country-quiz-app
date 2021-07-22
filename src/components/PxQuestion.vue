@@ -13,23 +13,19 @@
       :textAlternative="alternative.name"
     />
 
-    <PxButton textButton="Next" @click="nextQuestion" />
+    <PxButton textButton="Next" className="next" @click="nextQuestion" />
   </PxContainerQuestion>
 </template>
 
 <script>
 import { onMounted, reactive, computed, toRefs, ref } from "vue";
+import { useRouter } from "vue-router";
 import PxContainerQuestion from "./PxContainerQuestion";
 import PxQuestionText from "./PxQuestionText";
 import PxAlternative from "./PxAlternative";
 import PxButton from "./PxButton";
 //Utils
-import {
-  Shuffle,
-  ValidationIndex,
-  FetchData,
-  ShuffleAlternatives,
-} from "@/utils";
+import { ValidationIndex, FetchData, ShuffleAlternatives } from "@/utils";
 
 export default {
   name: "PxQuestion",
@@ -40,6 +36,8 @@ export default {
     PxButton,
   },
   setup() {
+    const router = useRouter();
+
     let optionsQuestions = reactive({
       min: 0,
       max: 250,
@@ -107,13 +105,11 @@ export default {
         optionsQuestions.alternatives = alternatives;
         optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
         optionsQuestions.loading = false;
+        localStorage.removeItem("selectedAlternative");
       } else {
-        if (optionsQuestions.questionsCorrect > 0) {
-          optionsQuestions.questionsCorrect--;
-        } else {
-          optionsQuestions.endGame = true;
-        }
+        optionsQuestions.endGame = true;
         console.log(optionsQuestions.questionsCorrect);
+        router.push("results");
       }
     };
 

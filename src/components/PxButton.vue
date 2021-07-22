@@ -1,6 +1,8 @@
 <template>
   <div class="question__button">
-    <button class="question__button-next">{{ textButton }}</button>
+    <button :class="'question__button-' + className">
+      {{ textButton }}
+    </button>
   </div>
 </template>
 
@@ -9,6 +11,7 @@ export default {
   name: "PxButton",
   props: {
     textButton: String,
+    className: String,
   },
 };
 </script>
