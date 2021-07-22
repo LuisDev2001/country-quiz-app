@@ -7,21 +7,75 @@
     />
     <h3 class="result__title">Results</h3>
     <p class="result__text">
-      You got <span class="result__points"><b>4</b></span> correct answers
+      You got
+      <span class="result__points">
+        <b v-text="optionsQuestion.questionsCorrect"></b>
+      </span>
+      correct answers
     </p>
-    <PxButton textButton="Try again" className="again" />
+    <PxButton
+      textButton="Try again"
+      className="again"
+      @click="handleTryAgain"
+    />
   </PxContainerQuestion>
 </template>
 
 <script>
+import { inject, computed } from "vue";
 import PxButton from "@/components/PxButton";
 import PxContainerQuestion from "./PxContainerQuestion";
+import { FetchData, ShuffleAlternatives } from "@/utils";
 
 export default {
   name: "PxPointsQuiz",
   components: {
     PxContainerQuestion,
     PxButton,
+  },
+  setup() {
+    const optionsQuestion = inject("dataQuestion");
+
+    /* Methods */
+    const handleTryAgain = async () => {
+      optionsQuestion.endGame = !optionsQuestion.endGame;
+      optionsQuestion.questionsCorrect = 0;
+      await getNewDataForNextQuestion();
+    };
+
+    const getNewDataForNextQuestion = async () => {
+      try {
+        optionsQuestion.loading = true;
+
+        //Get data for api country
+        const data = await FetchData(optionsQuestion.API_QUESTION_CAPITAL);
+
+        //Shuffle Alternatives
+        const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
+
+        //Add information for state
+        optionsQuestion.asnwer = data[ramdomNumber.value];
+        optionsQuestion.alternatives = alternatives;
+        optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;
+        optionsQuestion.loading = false;
+      } catch (error) {
+        console.log(error);
+        optionsQuestion.error = error;
+      }
+    };
+
+    /*Computeds*/
+    let ramdomNumber = computed(() =>
+      Math.floor(
+        Math.random() * (optionsQuestion.max - optionsQuestion.min) +
+          optionsQuestion.min
+      )
+    );
+
+    return {
+      optionsQuestion,
+      handleTryAgain,
+    };
   },
 };
 </script>
