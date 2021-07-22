@@ -1,7 +1,8 @@
 <template>
   <div
     @click="handleClickAlternative(textAlternative)"
-    :class="{ question__answer: true, 'is-active': activeAlternative }"
+    :class="{ question__answer: true }"
+    ref="jsAlternative"
   >
     <span class="question__answer-letter">{{ letter }}</span>
     <span class="question__answer-text">{{ textAlternative }}</span>
@@ -18,20 +19,28 @@ export default {
     textAlternative: String,
   },
   setup() {
-    const activeAlternative = ref(false);
+    const jsAlternative = ref(null);
 
     /*Methods*/
     const handleClickAlternative = (textAlternative) => {
-      activeAlternative.value = !activeAlternative.value;
       localStorage.setItem(
         "selectedAlternative",
         JSON.stringify(textAlternative)
       );
+      let arrayAlternatives = Array.from(
+        jsAlternative.value.parentNode.querySelectorAll(".question__answer")
+      );
+      arrayAlternatives.forEach((alternative) => {
+        if (alternative.className == "question__answer is-active") {
+          alternative.classList.remove("is-active");
+        }
+        jsAlternative.value.classList.add("is-active");
+      });
     };
 
     return {
       handleClickAlternative,
-      activeAlternative,
+      jsAlternative,
     };
   },
 };

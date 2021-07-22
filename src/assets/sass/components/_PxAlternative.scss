@@ -25,6 +25,7 @@
       font-size: 1.5rem;
     }
     &:hover,
+    &:focus,
     &.is-active {
       background: #f9a826;
       border-color: #f9a826;

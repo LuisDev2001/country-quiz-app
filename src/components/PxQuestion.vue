@@ -43,6 +43,17 @@ export default {
       const selectedAlternative = JSON.parse(
         localStorage.getItem("selectedAlternative")
       );
+
+      let arrayAlternatives = Array.from(
+        document.querySelectorAll(".question__answer")
+      );
+
+      arrayAlternatives.forEach((alternative) => {
+        if (alternative.className == "question__answer is-active") {
+          alternative.classList.remove("is-active");
+        }
+      });
+
       await getNewDataForNextQuestion(selectedAlternative, answer);
     };
 
