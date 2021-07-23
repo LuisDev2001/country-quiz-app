@@ -33,6 +33,8 @@ export default {
         "https://restcountries.eu/rest/v2/all?fields=name;capital;flag",
       asnwer: {},
       questionsCorrect: 0,
+      typeQuestion: false, //false = country || true = flag
+      flag: "",
       endGame: false,
       loading: false,
       error: null,

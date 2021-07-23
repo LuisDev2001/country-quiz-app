@@ -4,7 +4,16 @@
       <img src="@/assets/img/woldTopImg.svg" alt="IMAGE TOP" />
     </div>
 
-    <PxQuestionText :countryText="optionsQuestion.countryQuestion" />
+    <PxFlag
+      v-if="optionsQuestion.typeQuestion"
+      :urlFlag="optionsQuestion.flag"
+      :descriptionFlag="'Flag for ' + optionsQuestion.countryQuestion"
+    />
+
+    <PxQuestionText
+      :countryText="optionsQuestion.countryQuestion"
+      :typeQuestion="optionsQuestion.typeQuestion"
+    />
 
     <PxAlternative
       v-for="(alternative, index) in optionsQuestion.alternatives"
@@ -23,6 +32,7 @@ import PxContainerQuestion from "./PxContainerQuestion";
 import PxQuestionText from "./PxQuestionText";
 import PxAlternative from "./PxAlternative";
 import PxButton from "./PxButton";
+import PxFlag from "./PxFlag.vue";
 //Utils
 import { ValidationIndex, FetchData, ShuffleAlternatives } from "@/utils";
 
@@ -33,6 +43,7 @@ export default {
     PxQuestionText,
     PxAlternative,
     PxButton,
+    PxFlag,
   },
   setup() {
     const optionsQuestion = inject("dataQuestion");
@@ -54,22 +65,44 @@ export default {
         }
       });
 
-      await getNewDataForNextQuestion(selectedAlternative, answer);
+      //Change type question country or flag
+      optionsQuestion.typeQuestion = !optionsQuestion.typeQuestion;
+
+      if (!optionsQuestion.typeQuestion) {
+        await getNewDataForNextQuestion(
+          selectedAlternative,
+          answer,
+          optionsQuestion.API_QUESTION_CAPITAL
+        );
+        console.log("Country");
+      } else {
+        await getNewDataForNextQuestion(
+          selectedAlternative,
+          answer,
+          optionsQuestion.API_QUESTION_FLAG
+        );
+        console.log("Flag");
+      }
     };
 
-    const getNewDataForNextQuestion = async (selectedAlternative, answer) => {
+    const getNewDataForNextQuestion = async (
+      selectedAlternative,
+      answer,
+      url_api
+    ) => {
       if (selectedAlternative == answer) {
         optionsQuestion.questionsCorrect++;
 
         try {
           optionsQuestion.loading = true;
           //Get data for api country
-          const data = await FetchData(optionsQuestion.API_QUESTION_CAPITAL);
+          const data = await FetchData(url_api);
 
           //Shuffle Alternatives
           const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
 
           //Add information for state
+          optionsQuestion.flag = data[ramdomNumber.value].flag;
           optionsQuestion.asnwer = data[ramdomNumber.value];
           optionsQuestion.alternatives = alternatives;
           optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;

@@ -40,6 +40,10 @@ export default {
     const handleTryAgain = async () => {
       optionsQuestion.endGame = !optionsQuestion.endGame;
       optionsQuestion.questionsCorrect = 0;
+
+      //Change type question country
+      optionsQuestion.typeQuestion = false;
+
       await getNewDataForNextQuestion();
     };
 
