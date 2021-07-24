@@ -1,7 +1,7 @@
 <template>
   <div class="loader">
     <img src="@/assets/img/loader-custom.svg" alt="LOADER" />
-    <p>Cargando...</p>
+    <p>Loading...</p>
   </div>
 </template>
 
