@@ -4,7 +4,7 @@
     width: 100%;
     max-width: 238px;
     height: 128px;
-    margin: 0 auto 4.5rem auto;
+    margin: 0 auto 1.5rem auto;
     display: block;
   }
   &__title {
@@ -16,7 +16,7 @@
   }
   &__text {
     text-align: center;
-    margin: 0 0 4.375rem;
+    margin: 0 0 1.375rem;
     font-family: $font-poppins-regular;
     font-size: 1.15rem;
   }
@@ -24,5 +24,13 @@
     font-family: $font-poppins-semi-bold;
     font-size: 2.25rem;
     color: #6fcf97;
+  }
+  @media screen and (min-width: 768px) {
+    &__image {
+      margin: 0 auto 4.5rem auto;
+    }
+    &__text {
+      margin: 0 0 4.375rem;
+    }
   }
 }

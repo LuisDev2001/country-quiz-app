@@ -2,11 +2,8 @@
 
 .question {
   &__button {
-    text-align: center;
+    display: grid;
     &-next {
-      position: absolute;
-      right: 35px;
-      z-index: 55;
       width: 100%;
       max-width: 116px;
       height: 56px;
@@ -17,9 +14,15 @@
       font-family: $font-poppins-bold;
       font-size: 1.125rem;
       transition: 0.3s ease all;
+      justify-self: end;
       &:hover {
         background: #ffffff;
         color: #000000;
+      }
+      @media screen and (min-width: 768px) {
+        position: absolute;
+        right: 35px;
+        z-index: 55;
       }
     }
     &-again {
@@ -32,6 +35,7 @@
       font-size: 1.125rem;
       font-family: $font-poppins-bold;
       transition: 0.3s ease all;
+      justify-self: center;
       &:hover {
         background: #1d355d;
         color: #ffffff;
