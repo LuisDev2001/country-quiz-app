@@ -4,25 +4,35 @@
       <img src="@/assets/img/woldTopImg.svg" alt="IMAGE TOP" />
     </div>
 
-    <PxFlag
-      v-if="optionsQuestion.typeQuestion"
-      :urlFlag="optionsQuestion.flag"
-      :descriptionFlag="'Flag for ' + optionsQuestion.countryQuestion"
-    />
+    <div class="question__loader" v-if="optionsQuestion.loading">
+      <!-- Loader component -->
+      <PxLaoder />
+    </div>
+    <div class="question__content" v-else>
+      <PxFlag
+        v-if="optionsQuestion.typeQuestion"
+        :urlFlag="optionsQuestion.flag"
+        :descriptionFlag="'Flag for ' + optionsQuestion.countryQuestion"
+      />
 
-    <PxQuestionText
-      :countryText="optionsQuestion.countryQuestion"
-      :typeQuestion="optionsQuestion.typeQuestion"
-    />
+      <PxQuestionText
+        :countryText="optionsQuestion.countryQuestion"
+        :typeQuestion="optionsQuestion.typeQuestion"
+      />
 
-    <PxAlternative
-      v-for="(alternative, index) in optionsQuestion.alternatives"
-      :key="index"
-      :letter="ValidationIndex(index)"
-      :textAlternative="alternative.name"
-    />
+      <PxAlternative
+        v-for="(alternative, index) in optionsQuestion.alternatives"
+        :key="index"
+        :letter="ValidationIndex(index)"
+        :textAlternative="alternative.name"
+      />
 
-    <PxButton textButton="Next" className="next" @click="handleNextQuestion" />
+      <PxButton
+        textButton="Next"
+        className="next"
+        @click="handleNextQuestion"
+      />
+    </div>
   </PxContainerQuestion>
 </template>
 
@@ -33,6 +43,8 @@ import PxQuestionText from "./PxQuestionText";
 import PxAlternative from "./PxAlternative";
 import PxButton from "./PxButton";
 import PxFlag from "./PxFlag.vue";
+import PxLaoder from "./PxLaoder";
+
 //Utils
 import { ValidationIndex, FetchData, ShuffleAlternatives } from "@/utils";
 
@@ -44,6 +56,7 @@ export default {
     PxAlternative,
     PxButton,
     PxFlag,
+    PxLaoder,
   },
   setup() {
     const optionsQuestion = inject("dataQuestion");
@@ -74,14 +87,12 @@ export default {
           answer,
           optionsQuestion.API_QUESTION_CAPITAL
         );
-        console.log("Country");
       } else {
         await getNewDataForNextQuestion(
           selectedAlternative,
           answer,
           optionsQuestion.API_QUESTION_FLAG
         );
-        console.log("Flag");
       }
     };
 
@@ -96,24 +107,24 @@ export default {
         try {
           optionsQuestion.loading = true;
           //Get data for api country
-          const data = await FetchData(url_api);
+          setTimeout(async () => {
+            const data = await FetchData(url_api);
+            //Shuffle Alternatives
+            const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
 
-          //Shuffle Alternatives
-          const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
-
-          //Add information for state
-          optionsQuestion.flag = data[ramdomNumber.value].flag;
-          optionsQuestion.asnwer = data[ramdomNumber.value];
-          optionsQuestion.alternatives = alternatives;
-          optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;
-          optionsQuestion.loading = false;
-          localStorage.removeItem("selectedAlternative");
+            //Add information for state
+            optionsQuestion.flag = data[ramdomNumber.value].flag;
+            optionsQuestion.asnwer = data[ramdomNumber.value];
+            optionsQuestion.alternatives = alternatives;
+            optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;
+            optionsQuestion.loading = false;
+            localStorage.removeItem("selectedAlternative");
+          }, 1000);
         } catch (error) {
           optionsQuestion.error = error;
         }
       } else {
         optionsQuestion.endGame = true;
-        console.log(optionsQuestion.questionsCorrect);
       }
     };
 

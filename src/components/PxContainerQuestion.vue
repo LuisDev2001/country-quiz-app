@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/assets/sass/utils/_animation.scss";
 .card-quiz {
   background: #ffffff;
   padding: 2.9rem 2rem 4.25rem;
@@ -19,5 +20,8 @@ export default {
   position: relative;
   max-width: 464px;
   width: 100%;
+  animation-name: fadeIn;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-in;
 }
 </style>

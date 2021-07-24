@@ -50,18 +50,19 @@ export default {
     const getNewDataForNextQuestion = async () => {
       try {
         optionsQuestion.loading = true;
+        setTimeout(async () => {
+          //Get data for api country
+          const data = await FetchData(optionsQuestion.API_QUESTION_CAPITAL);
 
-        //Get data for api country
-        const data = await FetchData(optionsQuestion.API_QUESTION_CAPITAL);
+          //Shuffle Alternatives
+          const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
 
-        //Shuffle Alternatives
-        const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
-
-        //Add information for state
-        optionsQuestion.asnwer = data[ramdomNumber.value];
-        optionsQuestion.alternatives = alternatives;
-        optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;
-        optionsQuestion.loading = false;
+          //Add information for state
+          optionsQuestion.asnwer = data[ramdomNumber.value];
+          optionsQuestion.alternatives = alternatives;
+          optionsQuestion.countryQuestion = data[ramdomNumber.value].capital;
+          optionsQuestion.loading = false;
+        }, 1000);
       } catch (error) {
         console.log(error);
         optionsQuestion.error = error;

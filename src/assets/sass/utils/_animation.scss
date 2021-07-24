@@ -8,3 +8,12 @@
 .mode-fade-leave-to {
   opacity: 0;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

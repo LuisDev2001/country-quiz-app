@@ -41,7 +41,6 @@ export const FetchData = async (API) => {
  */
 export const ShuffleAlternatives = (data, ramdomNumber) => {
   let alternatives = Shuffle(data).slice(0, 3);
-  console.log(data[ramdomNumber]);
   alternatives.push(data[ramdomNumber]);
   Shuffle(alternatives);
   return alternatives;

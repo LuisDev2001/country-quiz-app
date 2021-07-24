@@ -45,18 +45,19 @@ export default {
     const getDataCountry = async () => {
       try {
         optionsQuestions.loading = true;
+        setTimeout(async () => {
+          //Get data for api country
+          const data = await FetchData(optionsQuestions.API_QUESTION_CAPITAL);
 
-        //Get data for api country
-        const data = await FetchData(optionsQuestions.API_QUESTION_CAPITAL);
+          //Shuffle Alternatives
+          const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
 
-        //Shuffle Alternatives
-        const alternatives = ShuffleAlternatives(data, ramdomNumber.value);
-
-        //Add information for state
-        optionsQuestions.asnwer = data[ramdomNumber.value];
-        optionsQuestions.alternatives = alternatives;
-        optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
-        optionsQuestions.loading = false;
+          //Add information for state
+          optionsQuestions.asnwer = data[ramdomNumber.value];
+          optionsQuestions.alternatives = alternatives;
+          optionsQuestions.countryQuestion = data[ramdomNumber.value].capital;
+          optionsQuestions.loading = false;
+        }, 1500);
       } catch (error) {
         console.log(error);
         optionsQuestions.error = error;
